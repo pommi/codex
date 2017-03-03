@@ -1919,6 +1919,7 @@ resource "aws_instance" "bastion" {
   key_name                    = "${var.aws_key_name}"
   vpc_security_group_ids      = ["${aws_security_group.dmz.id}"]
   subnet_id                   = "${aws_subnet.dmz.id}"
+  associate_public_ip_address = true
 
   tags { Name = "bastion" }
 
@@ -1944,11 +1945,7 @@ resource "aws_instance" "bastion" {
     }
   }
 }
-resource "aws_eip" "bastion" {
-  instance = "${aws_instance.bastion.id}"
-  vpc      = true
-}
 
 output "box.bastion.public" {
-  value = "${aws_eip.bastion.public_ip}"
+  value = "${aws_instance.bastion.public_ip}"
 }
