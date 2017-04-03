@@ -25,6 +25,15 @@ variable "aws_rds_prod_enabled"    { default = 0 } # Set to 1 to create the PROD
 variable "aws_rds_dev_instance_class"    { default = "db.t2.small" } # Instance Class for DEV RDS Databases
 variable "aws_rds_staging_instance_class"    { default = "db.t2.small" } # Instance Class for STAGING RDS Databases
 variable "aws_rds_prod_instance_class"    { default = "db.t2.small" } # Instance Class for PROD RDS Databases
+variable "aws_rds_dev_allocated_storage"     { default = "50" } # Allocated Storage for DEV RDS Databases
+variable "aws_rds_staging_allocated_storage" { default = "50" } # Allocated Storage for STAGING RDS Databases
+variable "aws_rds_prod_allocated_storage"    { default = "50" } # Allocated Storage for PROD RDS Databases
+variable "aws_rds_dev_storage_type"          { default = "standard" } # Storage Type for DEV RDS Databases
+variable "aws_rds_staging_storage_type"      { default = "standard" } # Storage Type for STAGING RDS Databases
+variable "aws_rds_prod_storage_type"         { default = "standard" } # Storage Type for PROD RDS Databases
+variable "aws_rds_dev_storage_encrypted"     { default = "false" } # Storage Encrypted for DEV RDS Databases
+variable "aws_rds_staging_storage_encrypted" { default = "false" } # Storage Encrypted for STAGING RDS Databases
+variable "aws_rds_prod_storage_encrypted"    { default = "false" } # Storage Encrypted for PROD RDS Databases
 variable "aws_rds_master_user"             { default = "cfdbadmin" } # Username for RDS Databases
 variable "aws_rds_dev_master_password"     { default = "admin" } # Password for DEV RDS Databases
 variable "aws_rds_staging_master_password" { default = "admin" } # Password for STAGING RDS Databases
@@ -1531,10 +1540,12 @@ output "box.nat.public" {
 resource "aws_db_instance" "dev-cf-db" {
   count                   = "${var.aws_rds_dev_enabled}"
   identifier              = "${var.aws_vpc_name}-dev-cf-db"
-  allocated_storage       = 50
+  allocated_storage       = "${var.aws_rds_dev_allocated_storage}"
   engine                  = "postgres"
   engine_version          = "9.5.2"
   instance_class          = "${var.aws_rds_dev_instance_class}"
+  storage_type            = "${var.aws_rds_dev_storage_type}"
+  storage_encrypted       = "${var.aws_rds_dev_storage_encrypted}"
   username                = "${var.aws_rds_master_user}"
   password                = "${var.aws_rds_dev_master_password}"
   port                    = "5432"
@@ -1554,10 +1565,12 @@ output "aws.rds.dev-cf-db.endpoint" {
 resource "aws_db_instance" "staging-cf-db" {
   count                   = "${var.aws_rds_staging_enabled}"
   identifier              = "${var.aws_vpc_name}-staging-cf-db"
-  allocated_storage       = 50
+  allocated_storage       = "${var.aws_rds_staging_allocated_storage}"
   engine                  = "postgres"
   engine_version          = "9.5.2"
   instance_class          = "${var.aws_rds_staging_instance_class}"
+  storage_type            = "${var.aws_rds_staging_storage_type}"
+  storage_encrypted       = "${var.aws_rds_staging_storage_encrypted}"
   username                = "${var.aws_rds_master_user}"
   password                = "${var.aws_rds_staging_master_password}"
   port                    = "5432"
@@ -1577,10 +1590,12 @@ output "aws.rds.staging-cf-db.endpoint" {
 resource "aws_db_instance" "prod-cf-db" {
   count                   = "${var.aws_rds_prod_enabled}"
   identifier              = "${var.aws_vpc_name}-prod-cf-db"
-  allocated_storage       = 50
+  allocated_storage       = "${var.aws_rds_prod_allocated_storage}"
   engine                  = "postgres"
   engine_version          = "9.5.2"
   instance_class          = "${var.aws_rds_prod_instance_class}"
+  storage_type            = "${var.aws_rds_prod_storage_type}"
+  storage_encrypted       = "${var.aws_rds_prod_storage_encrypted}"
   username                = "${var.aws_rds_master_user}"
   password                = "${var.aws_rds_prod_master_password}"
   port                    = "5432"
