@@ -867,7 +867,7 @@ networks:
         gateway:  10.4.1.1
         dns:     [10.4.0.2]
         cloud_properties:
-          subnet: subnet-xxxxxxxx # <-- your AWS Subnet ID
+          subnet: subnet-xxxxxxxx # <-- your global-infra-0 AWS Subnet ID
           security_groups: [wide-open]
         reserved:
           - 10.4.1.2 - 10.4.1.3    # Amazon reserves these
@@ -1081,7 +1081,7 @@ networks:
         gateway:  10.4.1.1
         dns:     [10.4.0.2]
         cloud_properties:
-          subnet: subnet-xxxxxxxx  # <--- your AWS Subnet ID
+          subnet: subnet-xxxxxxxx  # <--- your global-infra-0 AWS Subnet ID
           security_groups: [wide-open]
         reserved:
           - 10.4.1.2 - 10.4.1.3    # Amazon reserves these
@@ -1097,7 +1097,7 @@ networks:
         gateway:  10.4.2.1
         dns:     [10.4.2.2]
         cloud_properties:
-          subnet: subnet-yyyyyyyy  # <--- your AWS Subnet ID
+          subnet: subnet-yyyyyyyy  # <--- your global-infra-1 AWS Subnet ID
           security_groups: [wide-open]
         reserved:
           - 10.4.2.2 - 10.4.2.3    # Amazon reserves these
@@ -1113,7 +1113,7 @@ networks:
         gateway:  10.4.3.1
         dns:     [10.4.3.2]
         cloud_properties:
-          subnet: subnet-zzzzzzzz  # <--- your AWS Subnet ID
+          subnet: subnet-zzzzzzzz  # <--- your global-infra-2 AWS Subnet ID
           security_groups: [wide-open]
         reserved:
           - 10.4.3.2 - 10.4.3.3    # Amazon reserves these
@@ -1457,7 +1457,7 @@ networks:
         gateway:  10.4.1.1
         dns:     [10.4.0.2]
         cloud_properties:
-          subnet: subnet-xxxxxxxx  # <--- your AWS Subnet ID
+          subnet: subnet-xxxxxxxx  # <--- your global-infra-0 AWS Subnet ID
           security_groups: [wide-open]
         reserved:
           - 10.4.1.2 - 10.4.1.3    # Amazon reserves these
@@ -1658,7 +1658,7 @@ networks:
    - range: 10.4.1.0/24
      gateway: 10.4.1.1
      cloud_properties:
-       subnet: subnet-xxxxxxxx #<--- your AWS Subnet ID
+       subnet: subnet-xxxxxxxx #<--- your global-infra-0 AWS Subnet ID
        security_groups: [wide-open]
      dns: [10.4.0.2]
      reserved:
@@ -1905,7 +1905,7 @@ networks:
 		  - 10.4.1.4 - 10.4.1.47   # Allocated to other deployments
           - 10.4.1.65 - 10.4.1.254 # Allocated to other deployments
         cloud_properties:
-          subnet: subnet-nnnnnnnn # <-- your AWS Subnet ID
+          subnet: subnet-nnnnnnnn # <-- your global-infra-0 AWS Subnet ID
           security_groups: [wide-open]
 ```
 
@@ -3073,7 +3073,7 @@ networks:
     reserved: [10.4.35.2 - 10.4.35.3] # amazon reserves these
     gateway: 10.4.35.1
     cloud_properties:
-      subnet: subnet-XXXXXX # <--- your subnet ID here
+      subnet: subnet-XXXXXX # <--- your staging-cf-edge-0 subnet ID here
 - name: router2
   subnets:
   - range: 10.4.35.128/25
@@ -3081,7 +3081,7 @@ networks:
     reserved: [10.4.35.130 - 10.4.35.131] # amazon reserves these
     gateway: 10.4.35.129
     cloud_properties:
-      subnet: subnet-XXXXXX # <--- your subnet ID here
+      subnet: subnet-XXXXXX # <--- your staging-cf-edge-1 subnet ID here
 - name: cf1
   subnets:
   - range: 10.4.36.0/24
@@ -3089,7 +3089,7 @@ networks:
     reserved: [10.4.36.2 - 10.4.36.3] # amazon reserves these
     gateway: 10.4.36.1
     cloud_properties:
-      subnet: subnet-XXXXXX # <--- your subnet ID here
+      subnet: subnet-XXXXXX # <--- your staging-cf-core-0 subnet ID here
 - name: cf2
   subnets:
   - range: 10.4.37.0/24
@@ -3097,7 +3097,7 @@ networks:
     reserved: [10.4.37.2 - 10.4.37.3] # amazon reserves these
     gateway: 10.4.37.1
     cloud_properties:
-      subnet: subnet-XXXXXX # <--- your subnet ID here
+      subnet: subnet-XXXXXX # <--- your staging-cf-core-1 subnet ID here
 - name: cf3
   subnets:
   - range: 10.4.38.0/24
@@ -3105,7 +3105,7 @@ networks:
     reserved: [10.4.38.2 - 10.4.38.3] # amazon reserves these
     gateway: 10.4.38.1
     cloud_properties:
-      subnet: subnet-XXXXXX # <--- your subnet ID here
+      subnet: subnet-XXXXXX # <--- your staging-cf-core-2 subnet ID here
 - name: runner1
   subnets:
   - range: 10.4.39.0/24
@@ -3113,7 +3113,7 @@ networks:
     reserved: [10.4.39.2 - 10.4.39.3] # amazon reserves these
     gateway: 10.4.39.1
     cloud_properties:
-      subnet: subnet-XXXXXX # <--- your subnet ID here
+      subnet: subnet-XXXXXX # <--- your staging-cf-runtime-0 subnet ID here
 - name: runner2
   subnets:
   - range: 10.4.40.0/24
@@ -3121,7 +3121,7 @@ networks:
     reserved: [10.4.40.2 - 10.4.40.3] # amazon reserves these
     gateway: 10.4.40.1
     cloud_properties:
-      subnet: subnet-XXXXXX # <--- your subnet ID here
+      subnet: subnet-XXXXXX # <--- your staging-cf-runtime-1 subnet ID here
 - name: runner3
   subnets:
   - range: 10.4.41.0/24
@@ -3129,7 +3129,7 @@ networks:
     reserved: [10.4.41.2 - 10.4.41.3] # amazon reserves these
     gateway: 10.4.41.1
     cloud_properties:
-      subnet: subnet-XXXXXX # <--- your subnet ID here
+      subnet: subnet-XXXXXX # <--- your prod-cf-runtime-2 subnet ID here
 ```
 
 Let's see what's left now:
@@ -3166,7 +3166,7 @@ networks:
     reserved: [10.4.35.2 - 10.4.35.3] # amazon reserves these
     gateway: 10.4.35.1
     cloud_properties:
-      subnet: subnet-XXXXXX # <--- your subnet ID here
+      subnet: subnet-XXXXXX # <--- your staging-cf-edge-0 subnet ID here
 - name: router2
   subnets:
   - range: 10.4.35.128/25
@@ -3174,7 +3174,7 @@ networks:
     reserved: [10.4.35.130 - 10.4.35.131] # amazon reserves these
     gateway: 10.4.35.129
     cloud_properties:
-      subnet: subnet-XXXXXX # <--- your subnet ID here
+      subnet: subnet-XXXXXX # <--- your staging-cf-edge-1 subnet ID here
 - name: cf1
   subnets:
   - range: 10.4.36.0/24
@@ -3182,7 +3182,7 @@ networks:
     reserved: [10.4.36.2 - 10.4.36.3] # amazon reserves these
     gateway: 10.4.36.1
     cloud_properties:
-      subnet: subnet-XXXXXX # <--- your subnet ID here
+      subnet: subnet-XXXXXX # <--- your staging-cf-core-0 subnet ID here
 - name: cf2
   subnets:
   - range: 10.4.37.0/24
@@ -3190,7 +3190,7 @@ networks:
     reserved: [10.4.37.2 - 10.4.37.3] # amazon reserves these
     gateway: 10.4.37.1
     cloud_properties:
-      subnet: subnet-XXXXXX # <--- your subnet ID here
+      subnet: subnet-XXXXXX # <--- your staging-cf-core-1 subnet ID here
 - name: cf3
   subnets:
   - range: 10.4.38.0/24
@@ -3198,7 +3198,7 @@ networks:
     reserved: [10.4.38.2 - 10.4.38.3] # amazon reserves these
     gateway: 10.4.38.1
     cloud_properties:
-      subnet: subnet-XXXXXX # <--- your subnet ID here
+      subnet: subnet-XXXXXX # <--- your staging-cf-core-2 subnet ID here
 - name: runner1
   subnets:
   - range: 10.4.39.0/24
@@ -3206,7 +3206,7 @@ networks:
     reserved: [10.4.39.2 - 10.4.39.3] # amazon reserves these
     gateway: 10.4.39.1
     cloud_properties:
-      subnet: subnet-XXXXXX # <--- your subnet ID here
+      subnet: subnet-XXXXXX # <--- your staging-cf-runtime-0 subnet ID here
 - name: runner2
   subnets:
   - range: 10.4.40.0/24
@@ -3214,7 +3214,7 @@ networks:
     reserved: [10.4.40.2 - 10.4.40.3] # amazon reserves these
     gateway: 10.4.40.1
     cloud_properties:
-      subnet: subnet-XXXXXX # <--- your subnet ID here
+      subnet: subnet-XXXXXX # <--- your staging-cf-runtime-1 subnet ID here
 - name: runner3
   subnets:
   - range: 10.4.41.0/24
@@ -3222,7 +3222,7 @@ networks:
     reserved: [10.4.41.2 - 10.4.41.3] # amazon reserves these
     gateway: 10.4.41.1
     cloud_properties:
-      subnet: subnet-XXXXXX # <--- your subnet ID here
+      subnet: subnet-XXXXXX # <--- your staging-cf-runtime-2 subnet ID here
 
 properties:
   cc:
