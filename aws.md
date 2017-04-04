@@ -2839,7 +2839,18 @@ We will manually create uaadb, ccdb and diegodb for now. First, connect to your 
 psql postgres://cfdbadmin:your_password@your_rds_instance_endpoint:5432/postgres
 ```
 
-Then run `create database uaadb`, `create database ccdb` and `create database diegodb`. You also need to `create extension citext` on all of your databases.
+Then create the databases and create the citext extension on all of your databases:
+```
+create database uaadb;
+\c uaadb
+create extension citext;
+create database ccdb;
+\c ccdb
+create extension citext;
+create database diegodb;
+\c diegodb
+create extension citext;
+```
 
 Now that we have RDS instance and `ccdb`, `uaadb` and `diegodb` databases created inside it, lets refer to them in our `properties.yml` file:
 
