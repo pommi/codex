@@ -693,7 +693,7 @@ This is easy enough to supply.  We'll put these properties in
 `properties.yml`:
 
 ```
-$ cat properties.yml
+$ cat > properties.yml <<EOF
 ---
 meta:
   aws:
@@ -702,6 +702,7 @@ meta:
       z1: (( concat meta.aws.region "a" ))
     access_key: (( vault "secret/us-west-2:access_key" ))
     secret_key: (( vault "secret/us-west-2:secret_key" ))
+EOF
 ```
 
 I use the `(( concat ... ))` operator to [DRY][DRY] up the
@@ -759,7 +760,7 @@ cat ~/.ssh/cf-deploy.pem | pbcopy
 Then add the following to the `properties.yml` file.
 
 ```
-$ cat properties.yml
+$ cat > properties.yml <<EOF
 ---
 meta:
   aws:
@@ -772,6 +773,7 @@ meta:
     ssh_key_name: your-ec2-keypair-name
     default_sgs:
       - restricted
+EOF
 ```
 
 Once more, with feeling:
@@ -826,10 +828,11 @@ Now we can put references to our Vaultified keypair in
 `credentials.yml`:
 
 ```
-$ cat credentials.yml
+$ cat > credentials.yml <<EOF
 ---
 meta:
   shield_public_key: (( vault "secret/us-west-2/proto/shield/keys/core:public" ))
+EOF
 ```
 
 You may want to take this opportunity to migrate
@@ -858,7 +861,7 @@ repository, that would be `10.4.1.0/24`, and we're allocating
 then, should look like this:
 
 ```
-$ cat networking.yml
+$ cat > networking.yml <<EOF
 ---
 networks:
   - name: default
@@ -875,6 +878,7 @@ networks:
           - 10.4.1.16 - 10.4.1.254 # Allocated to other deployments
         static:
           - 10.4.1.4
+EOF
 ```
 
 Our range is that of the actual subnet we are in, `10.4.1.0/24`
@@ -1051,7 +1055,7 @@ networks:
 First, lets do our AWS-specific region/zone configuration, along with our Vault HA fully-qualified domain name:
 
 ```
-$ cat properties.yml
+$ cat > properties.yml <<EOF
 ---
 meta:
   aws:
@@ -1064,6 +1068,7 @@ properties:
   vault:
     ha:
       domain: 10.4.1.16
+EOF
 ```
 
 Our `/28` ranges are actually in their corresponding `/24` ranges
@@ -1072,7 +1077,7 @@ simplification.  That leaves us with this for our
 `networking.yml`:
 
 ```
-$ cat networking.yml
+$ cat > networking.yml <<EOF
 ---
 networks:
   - name: vault_z1
@@ -1122,6 +1127,7 @@ networks:
           - 10.4.3.32 - 10.4.3.254 # Allocated to other deployments
         static:
           - 10.4.3.16 - 10.4.3.18
+EOF
 ```
 
 That's a ton of configuration, but when you break it down it's not
@@ -1437,10 +1443,11 @@ Plan][netplan], the SHIELD deployment belongs in the
 information into `properties.yml`:
 
 ```
-$ cat properties.yml
+$ cat > properties.yml <<EOF
 ---
 meta:
   az: us-west-2a
+EOF
 ```
 
 As we found with Vault, the `/28` range is actually in it's outer
@@ -1448,7 +1455,7 @@ As we found with Vault, the `/28` range is actually in it's outer
 convenience.
 
 ```
-$ cat networking.yml
+$ cat > networking.yml <<EOF
 ---
 networks:
   - name: shield
@@ -1466,6 +1473,7 @@ networks:
           - 10.4.1.48 - 10.4.1.254 # Allocated to other deployments
         static:
           - 10.4.1.32 - 10.4.1.34
+EOF
 ```
 
 (Don't forget to change your `subnet` to match your AWS VPC
@@ -1474,7 +1482,7 @@ configuration.)
 Then we need to configure our `store` and a default `schedule` and `retention` policy:
 
 ```
-$ cat properties.yml
+$ cat > properties.yml <<EOF
 ---
 ...
 
@@ -1495,6 +1503,7 @@ properties:
     retention:
       name: "default"
       expires: "86400" # 24 hours
+EOF
 ```
 
 Finally, if you recall, we already generated an SSH keypair for
@@ -1504,12 +1513,13 @@ SHIELD, so that we could pre-deploy the public key to our
 deployment:
 
 ```
-$ cat credentials.yml
+$ cat > credentials.yml <<EOF
 ---
 properties:
   shield:
     daemon:
       ssh_private_key: (( vault meta.vault_prefix "/keys/core:private"))
+EOF
 ```
 
 Now, our `make manifest` should succeed (and not complain)
@@ -1639,17 +1649,18 @@ According to the [Network Plan][netplan], the bolo deployment belongs in the
 **10.4.1.64/28** network, in zone 1 (a). Let's configure the availability zone in `properties.yml`:
 
 ```
-$ cat properties.yml
+$ cat > properties.yml <<EOF
 ---
 meta:
   region: us-west-2
   az: (( concat meta.region "a" ))
+EOF
 ```
 
 Since `10.4.1.64/28` is subdivision of the `10.4.1.0/24` subnet, we can configure networking as follows.
 
 ```
-$ cat networking.yml
+$ cat > networking.yml <<EOF
 ---
 networks:
  - name: bolo
@@ -1668,6 +1679,7 @@ networks:
        - 10.4.1.80 - 10.4.1.254 # Allocated to other deployments
      static:
        - 10.4.1.65 - 10.4.1.68
+EOF
 ```
 
 You can validate your manifest by running `make manifest` and
@@ -1873,7 +1885,7 @@ make: *** [manifest] Error 5
 Again starting with Meta lines in `~/ops/concourse-deployments/us-west-2/proto`:
 
 ```
-$ cat properties.yml
+$ cat > properties.yml <<EOF
 ---
 meta:
   availability_zone: "us-west-2a"   # Set this to match your first zone "aws_az1"
@@ -1881,6 +1893,7 @@ meta:
   ssl_pem: ~
   #  ssl_pem: (( vault meta.vault_prefix "/web_ui:pem" ))
   shield_authorized_key: (( vault "secret/us-west-2/proto/shield/keys/core:public" ))
+EOF
 ```
 
 Be sure to replace the x.x.x.x in the external_url above with the Elastic IP address of the bastion host.
@@ -1890,7 +1903,7 @@ The `~` means we won't use SSL certs for now.  If you have proper certs or want 
 For networking, we put this inside `proto` environment level.
 
 ```
-$ cat networking.yml
+$ cat > networking.yml <<EOF
 ---
 networks:
   - name: concourse
@@ -1902,11 +1915,12 @@ networks:
           - 10.4.1.48 - 10.4.1.56  # We use 48-64, reserving the first eight for static
         reserved:
           - 10.4.1.2 - 10.4.1.3    # Amazon reserves these
-		  - 10.4.1.4 - 10.4.1.47   # Allocated to other deployments
+          - 10.4.1.4 - 10.4.1.47   # Allocated to other deployments
           - 10.4.1.65 - 10.4.1.254 # Allocated to other deployments
         cloud_properties:
           subnet: subnet-nnnnnnnn # <-- your global-infra-0 AWS Subnet ID
           security_groups: [wide-open]
+EOF
 ```
 
 After it is deployed, you can do a quick test by hitting the HAProxy machine
@@ -2100,7 +2114,7 @@ networking, so lets fill out our `networking.yml`, after consulting the
 console to find our subnet ID:
 
 ```
-$ cat networking.yml
+$ cat > networking.yml <<EOF
 ---
 meta:
   net:
@@ -2109,6 +2123,7 @@ meta:
     range: 10.4.1.0/24
     gateway: 10.4.1.1
     dns: [10.4.0.2]
+EOF
 ```
 
 Since there are a bunch of other deployments on the infrastructure network, we should take care
@@ -2116,7 +2131,7 @@ to reserve the correct static + reserved IPs, so that we don't conflict with oth
 that data can be referenced in the [Global Infrastructure IP Allocation section][infra-ips] of the Network Plan:
 
 ```
-$ cat networking.yml
+$ cat > networking.yml <<EOF
 ---
 meta:
   net:
@@ -2127,13 +2142,14 @@ meta:
     static: [10.4.1.80]
     reserved: [10.4.1.2 - 10.4.1.79, 10.4.1.96 - 10.4.1.255]
     dns: [10.4.0.2]
+EOF
 ```
 
 Lastly, we will need to add port-forwarding rules, so that things outside the bosh-lite can talk to its services.
 Since we know we will be deploying Cloud Foundry, let's add rules for it:
 
 ```
-$ cat properties.yml
+$ cat > properties.yml <<EOF
 ---
 meta:
   aws:
@@ -2146,6 +2162,7 @@ meta:
   - internal_ip: 10.244.0.34
     internal_port: 443
     external_port: 443
+EOF
 ```
 
 And finally, we can deploy again:
@@ -2326,11 +2343,12 @@ Unlike all the other deployments so far, we won't use `make manifest` to vet the
 
 ```
 cd bosh-lite/alpha
-$ cat properties.yml
+$ cat > properties.yml <<EOF
 ---
 meta:
   cf:
     base_domain: 10.4.1.80.sslip.io
+EOF
 ```
 
 Now we can deploy:
@@ -2782,7 +2800,7 @@ make: *** [manifest] Error 5
 Oh boy. That's a lot. Cloud Foundry must be complicated. Looks like a lot of the fog_connection properties are all duplicates though, so lets fill out `properties.yml` with those (no need to create the blobstore S3 buckets yourself):
 
 ```
-$ cat properties.yml
+$ cat > properties.yml <<EOF
 ---
 meta:
   skip_ssl_validation: true
@@ -2792,6 +2810,7 @@ meta:
         aws_access_key_id: (( vault "secret/us-west-2:access_key" ))
         aws_secret_access_key: (( vault "secret/us-west-2:secret_key" ))
         region: us-west-2
+EOF
 ```
 
 ##### Setup RDS Database
@@ -2855,7 +2874,7 @@ create extension citext;
 Now that we have RDS instance and `ccdb`, `uaadb` and `diegodb` databases created inside it, lets refer to them in our `properties.yml` file:
 
 ```
-cat properties.yml
+$ cat > properties.yml <<EOF
 ---
 meta:
   skip_ssl_validation: true
@@ -2890,6 +2909,7 @@ properties:
         db_driver: postgres
         db_connection_string: (( concat "postgres://" meta.cf.diegodb.user ":" meta.cf.diegodb.pass "@" meta.cf.diegodb.host ":" meta.cf.diegodb.port "/" meta.cf.diegodb.dbname ))
 
+EOF
 ```
 We have to configure `db_driver` and `db_connection_string` for diego since the templates we use is MySQL and we are using PostgreSQL here.
 
@@ -3046,7 +3066,7 @@ make: *** [manifest] Error 5
 All of those parameters look like they're networking related. Time to start building out the `networking.yml` file. Since our VPC is `10.4.0.0/16`, Amazon will have provided a DNS server for us at `10.4.0.2`. We can grab the AZs and ELB names from our terraform output, and define our router + cf security groups, without consulting the Network Plan:
 
 ```
-$ cat networking.yml
+$ cat > networking.yml <<EOF
 ---
 meta:
   azs:
@@ -3058,12 +3078,13 @@ meta:
   ssh_elbs: [xxxxxx-staging-cf-ssh-elb] # <- SSH ELB name
   router_security_groups: [wide-open]
   security_groups: [wide-open]
+EOF
 ```
 
 Now, we can consult our [Network Plan][netplan] for the subnet information,  cross referencing with terraform output or the AWS console to get the subnet ID:
 
 ```
-$ cat networking.yml
+$ cat > networking.yml <<EOF
 ---
 meta:
   azs:
@@ -3141,6 +3162,7 @@ networks:
     gateway: 10.4.41.1
     cloud_properties:
       subnet: subnet-XXXXXX # <--- your prod-cf-runtime-2 subnet ID here
+EOF
 ```
 
 Let's see what's left now:
@@ -3156,7 +3178,7 @@ $ make deploy
 The only bits left are the Cloud Foundry security group definitions (applied to each running app, not the SGs applied to the CF VMs). We add three sets of rules for apps to have access to by default - `load_balancer`, `services`, and `user_bosh_deployments`. The `load_balancer` group should have a rule allowing access to the public IP(s) of the Cloud Foundry installation, so that apps are able to talk to other apps. The `services` group should have rules allowing access to the internal IPs of the services networks (according to our [Network Plan][netplan], `10.4.42.0/24`, `10.4.43.0/24`, `10.4.44.0/24`). The `user_bosh_deployments` is used for any non-CF-services that the apps may need to talk to. In our case, there aren't any, so this can be an empty list.
 
 ```
-$ cat networking.yml
+$ cat > networking.yml <<EOF
 ---
 meta:
   azs:
@@ -3246,6 +3268,7 @@ properties:
         protocol: all
     - name: user_bosh_deployments
       rules: []
+EOF
 ```
 Another thing we may want to do is scale the VM size to save some cost when we are deploying in non-production environment, for example, we can configure the `scaling.yml` as follows:
 
