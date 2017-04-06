@@ -95,27 +95,26 @@ variable "aws_nat_ami" {
 # These are the region-specific IDs for an
 # HVM-compatible Ubuntu image:
 #
-#    ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-20160830
+#    ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-20170516
 #
 # The username to log into the bastion is `ubuntu'
-#
-# The regions, in order, are: N Virginia, N California,
-#   Oregon, Ireland, Frankfurt, Tokyo, Seoul, Singapore,
-#   Sydney, Mumbai, and Sao Paulo.
 
 variable "aws_ubuntu_ami" {
   default = {
-    us-east-1      = "ami-4f680658"
-    us-west-1      = "ami-68a9e408"
-    us-west-2      = "ami-8936e0e9"
-    eu-west-1      = "ami-ee6b189d"
-    eu-central-1   = "ami-c954a4a6"
-    ap-northeast-1 = "ami-a7428ac6"
-    ap-northeast-2 = "ami-9824f1f6"
-    ap-southeast-1 = "ami-4b9b4028"
-    ap-southeast-2 = "ami-ef1a2c8c"
-    ap-south-1     = "ami-cef98ca1"
-    sa-east-1      = "ami-4e1f8e22"
+    ap-northeast-1 = "ami-1de1df7a"
+    ap-northeast-2 = "ami-6722ff09"
+    ap-south-1     = "ami-4fa4d920"
+    ap-southeast-1 = "ami-93ef68f0"
+    ap-southeast-2 = "ami-1e01147d"
+    ca-central-1   = "ami-e273cf86"
+    eu-central-1   = "ami-a74c95c8"
+    eu-west-1      = "ami-6c101b0a"
+    eu-west-2      = "ami-056d7a61"
+    sa-east-1      = "ami-4bd8b727"
+    us-east-1      = "ami-20631a36"
+    us-east-2      = "ami-a5b196c0"
+    us-west-1      = "ami-9fe6c7ff"
+    us-west-2      = "ami-45224425"
   }
 }
 
