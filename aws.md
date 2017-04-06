@@ -2439,12 +2439,12 @@ We already have the `us-west-2` site created, so now we will just need to create
 
 ```
 $ safe target proto
-Now targeting proto at http://10.10.10.6:8200
+Now targeting proto at http://10.4.1.16:8200
 $ genesis new env us-west-2 staging
 RSA 1024 bit CA certificates are loaded due to old openssl compatibility
 Running env setup hook: ~/ops/bosh-deployments/.env_hooks/setup
 
- proto	http://10.10.10.6:8200
+ proto	http://10.4.1.16:8200
 
 Use this Vault for storing deployment credentials?  [yes or no] yes
 Setting up credentials in vault, under secret/us-west-2/staging/bosh
@@ -2678,7 +2678,7 @@ $ genesis new env us-west-2 staging
 RSA 1024 bit CA certificates are loaded due to old openssl compatibility
 Running env setup hook: ~/ops/cf-deployments/.env_hooks/00_confirm_vault
 
- proto	http://10.10.10.6:8200
+ proto	http://10.4.1.16:8200
 
 Use this Vault for storing deployment credentials?  [yes or no] yes
 Running env setup hook: ~/ops/cf-deployments/.env_hooks/setup_certs
