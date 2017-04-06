@@ -64,28 +64,26 @@ variable "aws_route53_prod_hosted_zone_id"    { default = "" } # PROD Hosted Zon
 # These are the region-specific IDs for the Amazon-suggested
 # AMI for running a NAT instance inside of a VPC:
 #
-#    amzn-ami-vpc-nat-hvm-2016.03.3.x86_64-ebs
+#    amzn-ami-vpc-nat-hvm-2017.03.0.20170417-x86_64-ebs
 #
 # The username to log into the nat box is `ec2-user'
-#
-# The regions, in order, are: N Virginia, N California,
-#   Oregon, Ireland, Frankfurt, Tokyo, Seoul, Singapore,
-#   Sydney, Mumbai, and Sao Paulo.
 
 variable "aws_nat_ami" {
   default = {
-    us-east-1      = "ami-4868ab25"
-    us-east-2      = "ami-92a6fef7"
-    us-west-1      = "ami-004b0f60"
-    us-west-2      = "ami-a275b1c2"
-    eu-west-1      = "ami-a8dd45db"
-    eu-central-1   = "ami-5825cd37"
-    ap-northeast-1 = "ami-2443b745"
-    ap-northeast-2 = "ami-d14388bf"
-    ap-southeast-1 = "ami-a79b49c4"
-    ap-southeast-2 = "ami-53371f30"
-    ap-south-1     = "ami-e2b9d38d"
-    sa-east-1      = "ami-9336bcff"
+    ap-northeast-1 = "ami-6c3c130b"
+    ap-northeast-2 = "ami-2e15c740"
+    ap-south-1     = "ami-85c1b2ea"
+    ap-southeast-1 = "ami-ae5ce5cd"
+    ap-southeast-2 = "ami-242f2647"
+    ca-central-1   = "ami-c8db67ac"
+    eu-central-1   = "ami-0469bb6b"
+    eu-west-1      = "ami-5bc6c23d"
+    eu-west-2      = "ami-17c4d073"
+    sa-east-1      = "ami-93ccaeff"
+    us-east-1      = "ami-258e1f33"
+    us-east-2      = "ami-6793b702"
+    us-west-1      = "ami-eeba9f8e"
+    us-west-2      = "ami-8437a5e4"
   }
 }
 
