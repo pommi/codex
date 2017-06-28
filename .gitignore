@@ -12,7 +12,3 @@ properties.yml
 
 # SSH key file
 bosh.pem
-
-# Gitbook server folders
-_book
-node_modules
