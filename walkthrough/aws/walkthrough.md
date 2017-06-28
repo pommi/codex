@@ -1009,12 +1009,18 @@ $ make manifest
  - $.meta.cf.blobstore_config.fog_connection.region: Which region are the blobstore S3 buckets in?
  - $.meta.cf.ccdb.host: What hostname/IP is the ccdb available at?
  - $.meta.cf.ccdb.pass: Specify the password of the ccdb user
+ - $.meta.cf.ccdb.port: What port is the ccdb listening on?
+ - $.meta.cf.ccdb.scheme: Specify the type of database the ccdb is (postgres, mysql)
  - $.meta.cf.ccdb.user: Specify the user to connect to the ccdb
  - $.meta.cf.diegodb.host: What hostname/IP is the diegodb available at?
  - $.meta.cf.diegodb.pass: Specify the password of the diegodb user
+ - $.meta.cf.diegodb.port: What port is the diegodb listening on?
+ - $.meta.cf.diegodb.scheme: Specify the type of database the diegodb is (postgres, mysql)
  - $.meta.cf.diegodb.user: Specify the user to connect to the diegodb
  - $.meta.cf.uaadb.host: What hostname/IP is the uaadb available at?
  - $.meta.cf.uaadb.pass: Specify the password of the uaadb user
+ - $.meta.cf.uaadb.port: What port is the uaadb listening on?
+ - $.meta.cf.uaadb.scheme: Specify the type of database the uaadb is (postgresql, mysql)
  - $.meta.cf.uaadb.user: Specify the user to connect to the uaadb
  - $.meta.dns: Enter the DNS server for your VPC
  - $.meta.elbs: What elbs will be in front of the gorouters?
@@ -1076,6 +1082,7 @@ $ make manifest
  - $.properties.cc.security_group_definitions.load_balancer.rules: Specify the rules for allowing access for CF apps to talk to the CF Load Balancer External IPs
  - $.properties.cc.security_group_definitions.services.rules: Specify the rules for allowing access to CF services subnets
  - $.properties.cc.security_group_definitions.user_bosh_deployments.rules: Specify the rules for additional BOSH user services that apps will need to talk to
+ - $.properties.diego.bbs.sql.db_connection_string: Specify db_connection_string in the format of diegodb_scheme://diegodb_user:diegodb_pass@diegodb_host:diegodb_port/diegodb_dbname for postgresql or diegodb_user:diegodb_pass@tcp(diegodb_host:diegodb_port)/diegodb_dbname for mysql
 
 
 Failed to merge templates; bailing...
@@ -1100,7 +1107,7 @@ meta:
 
 ##### Setup RDS Database
 
-Next, lets tackle the database situation. We will need to create RDS instances for the `uaadb` and `ccdb`, but first we need to generate a password for the RDS instances:
+Next, lets tackle the database situation. We will need to create RDS instances for the `uaadb`, `ccdb` and `diegodb`, but first we need to generate a password for the RDS instances:
 
 ```
 $ safe gen 40 secret/us-west-2/staging/cf/rds password
@@ -1184,7 +1191,7 @@ properties:
         db_connection_string: (( concat "postgres://" meta.cf.diegodb.user ":" meta.cf.diegodb.pass "@" meta.cf.diegodb.host ":" meta.cf.diegodb.port "/" meta.cf.diegodb.dbname ))
 
 ```
-We have to configure `db_driver` and `db_connection_string` for diego since the templates we use is MySQL and we are using PostgreSQL here.
+Here we are using RDS postgres for databases. If you are using RDS mysql, you need to change `scheme` and `port` for `ccdb`,`uaadb` and `diegodb`, `db_driver` and `db_connection_string` for diego configuration above.
 
 (( insert_file beta_cf_cacert.md ))
 Now let's go back to the `terraform/aws` sub-directory of this repository and add to the `aws.tfvars` file the following configurations:
