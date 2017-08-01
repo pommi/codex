@@ -55,8 +55,6 @@ networks (i.e. cf-edge-0, cf-edge-1, cf-0, cf-1, etc.).
 |         |              | 10.4.1.0/24    |  254 |     1 | global-infra-0       | Global Infrastructure  |
 |         |              | 10.4.2.0/24    |  254 |     2 | global-infra-1       | Global Infrastructure  |
 |         |              | 10.4.3.0/24    |  254 |     3 | global-infra-2       | Global Infrastructure  |
-|         |              | 10.4.4.0/25    |  126 |     1 | global-openvpn-0     | Global OpenVPN         |
-|         |              | 10.4.4.128/25  |  126 |     2 | global-openvpn-1     | Global OpenVPN         |
 | dev     | 10.4.16.0/20 |                | 4096 |       |                      |                        |
 |         |              | 10.4.16.0/24   |  254 |     1 | dev-infra-0          | Site Infrastructure    |
 |         |              | 10.4.17.0/24   |  254 |     2 | dev-infra-1          | Site Infrastructure    |
